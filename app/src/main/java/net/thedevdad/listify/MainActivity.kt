@@ -5,12 +5,18 @@ package net.thedevdad.listify
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -21,7 +27,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import net.thedevdad.listify.ui.theme.ListifyTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,7 +43,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CreateNew()
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                    ){
+                        Header()
+                        CreateNew()
+                        ListOfLists()
+                    }
+
                 }
             }
         }
@@ -42,9 +58,26 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun Header()
+{
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Cyan),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Text(
+            text = "Lisfity",
+            modifier = Modifier.padding(10.dp),
+            color = Color.White
+        )
+    }
+}
+
+@Composable
 fun ListOfLists()
 {
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,19 +88,25 @@ fun CreateNew()
         mutableStateOf("")
     }
     Row(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+
     ) {
-     TextField(
+     OutlinedTextField(
          value = newListName,
          onValueChange =  { text ->
             newListName = text
-         }
+         },
+         modifier = Modifier
+             .weight(1f)
      )
 
      Button(onClick = {
         newListName = ""
-     }) {
-         Text(text = "Create")
+        },
+         modifier = Modifier.padding(4.dp)) {
+         Text(text = "Add")
      }
     }
 }
@@ -76,6 +115,16 @@ fun CreateNew()
 @Composable
 fun HomeScreenPreview() {
     ListifyTheme {
-        CreateNew()
+        Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Header()
+                CreateNew()
+            }
+        }
     }
 }
